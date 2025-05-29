@@ -40,9 +40,9 @@ const Hero: React.FC = () => {
           {/* Left Column - Content */}
           <div className="space-y-8">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
               className="space-y-6"
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 rounded-full text-primary-700 text-sm font-medium">
@@ -63,9 +63,9 @@ const Hero: React.FC = () => {
 
             {/* Features */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               className="flex flex-wrap gap-4"
             >
               {features.map((feature, index) => (
@@ -78,9 +78,9 @@ const Hero: React.FC = () => {
 
             {/* CTA Buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-4"
             >
               <button
@@ -179,7 +179,7 @@ const Hero: React.FC = () => {
                         <motion.path
                           initial={{ pathLength: 0, opacity: 0 }}
                           animate={{ pathLength: 1, opacity: 0.3 }}
-                          transition={{ duration: 2, ease: "easeOut" }}
+                          transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
                           d="M20,80 Q50,70 80,65 Q110,45 140,50 Q170,35 200,25 Q230,20 260,15 L260,96 L20,96 Z"
                           fill="url(#gradient)"
                           className="drop-shadow-sm"
@@ -189,7 +189,7 @@ const Hero: React.FC = () => {
                         <motion.path
                           initial={{ pathLength: 0 }}
                           animate={{ pathLength: 1 }}
-                          transition={{ duration: 2, ease: "easeOut" }}
+                          transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
                           d="M20,80 Q50,70 80,65 Q110,45 140,50 Q170,35 200,25 Q230,20 260,15"
                           stroke="#f97316"
                           strokeWidth="3"

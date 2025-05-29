@@ -4,7 +4,6 @@ import About from './components/About';
 import Services from './components/Services';
 import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
-import BackToTop from './components/BackToTop';
 import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
@@ -19,7 +18,6 @@ function App() {
           <Testimonials />
           <Contact />
         </main>
-        <BackToTop />
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
