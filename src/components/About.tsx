@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Target, Users, Zap, Award, ArrowRight } from 'lucide-react';
-import { smoothScrollToWithEasing } from '../utils/scroll';
+import { smoothScrollToInstant } from '../utils/scroll';
 
 const About: React.FC = () => {
   const values = [
@@ -79,7 +79,7 @@ const About: React.FC = () => {
             </div>
 
             <button
-              onClick={() => smoothScrollToWithEasing('#contact', 80, 800)}
+              onClick={() => smoothScrollToInstant('#contact', 80)}
               className="btn btn-primary btn-lg group"
             >
               Work With Us

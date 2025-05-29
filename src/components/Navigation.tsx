@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trackConversion } from '../utils/analytics';
-import { smoothScrollToWithEasing } from '../utils/scroll';
+import { smoothScrollToInstant } from '../utils/scroll';
 
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,15 +43,15 @@ const Navigation: React.FC = () => {
 
   const scrollToSection = (href: string) => {
     trackConversion('scroll_to_section');
-    // Use enhanced smooth scrolling with custom easing
-    smoothScrollToWithEasing(href, 80, 800);
+    // Use instant smooth scrolling for immediate response (no delay)
+    smoothScrollToInstant(href, 80);
     setIsOpen(false);
   };
 
   const handleBookCall = () => {
     trackConversion('nav_scroll_to_booking');
-    // Use enhanced smooth scrolling for booking CTA
-    smoothScrollToWithEasing('#contact', 80, 800);
+    // Use instant smooth scrolling for booking CTA
+    smoothScrollToInstant('#contact', 80);
   };
 
   return (

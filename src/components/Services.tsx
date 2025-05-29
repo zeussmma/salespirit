@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Target, Zap, Users, ArrowRight, CheckCircle } from 'lucide-react';
-import { smoothScrollToWithEasing } from '../utils/scroll';
+import { smoothScrollToInstant } from '../utils/scroll';
 
 const Services: React.FC = () => {
   const services = [
@@ -36,7 +36,7 @@ const Services: React.FC = () => {
   ];
 
   const scrollToContact = () => {
-    smoothScrollToWithEasing('#contact', 80, 800);
+    smoothScrollToInstant('#contact', 80);
   };
 
   return (
@@ -130,7 +130,7 @@ const Services: React.FC = () => {
                 <ArrowRight size={20} className="group-hover:translate-x-0.5 transition-transform" />
               </button>
               <button
-                onClick={() => smoothScrollToWithEasing('#results', 80, 800)}
+                onClick={() => smoothScrollToInstant('#results', 80)}
                 className="btn btn-secondary btn-lg"
               >
                 View Case Studies
