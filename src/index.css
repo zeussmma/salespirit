@@ -18,6 +18,23 @@
 
   html {
     scroll-behavior: smooth;
+    /* Enhanced smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Smooth scrolling for all elements */
+  * {
+    scroll-behavior: smooth;
+  }
+
+  /* Respect user's motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    html, * {
+      scroll-behavior: auto;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
@@ -191,5 +208,51 @@
 
   .shadow-large {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Smooth scrolling utilities */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+
+  .smooth-scroll-instant {
+    scroll-behavior: auto;
+  }
+
+  /* Enhanced smooth scrolling with easing */
+  .smooth-scroll-enhanced {
+    scroll-behavior: smooth;
+    transition: scroll-top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Scroll margin utilities for sticky nav */
+  .scroll-mt-20 {
+    scroll-margin-top: 5rem; /* 80px */
+  }
+
+  .scroll-mt-24 {
+    scroll-margin-top: 6rem; /* 96px */
+  }
+
+  .scroll-mt-32 {
+    scroll-margin-top: 8rem; /* 128px */
+  }
+
+  /* Smooth transitions for scroll-triggered elements */
+  .scroll-smooth-transition {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Scroll snap utilities */
+  .scroll-snap-y {
+    scroll-snap-type: y mandatory;
+  }
+
+  .scroll-snap-start {
+    scroll-snap-align: start;
+  }
+
+  .scroll-snap-center {
+    scroll-snap-align: center;
   }
 }

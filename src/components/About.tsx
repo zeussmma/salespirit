@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Target, Users, Zap, Award, ArrowRight } from 'lucide-react';
+import { smoothScrollToWithEasing } from '../utils/scroll';
 
 const About: React.FC = () => {
   const values = [
@@ -34,7 +35,7 @@ const About: React.FC = () => {
   ];
 
   return (
-    <section id="about" className="section bg-neutral-50">
+    <section id="about" className="section bg-neutral-50 scroll-mt-20">
       <div className="container">
         {/* Section Header */}
         <motion.div
@@ -78,12 +79,7 @@ const About: React.FC = () => {
             </div>
 
             <button
-              onClick={() => {
-                const element = document.querySelector('#contact');
-                if (element) {
-                  element.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
+              onClick={() => smoothScrollToWithEasing('#contact', 80, 800)}
               className="btn btn-primary btn-lg group"
             >
               Work With Us

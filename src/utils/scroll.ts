@@ -1,5 +1,9 @@
-// Smooth scroll utility with performance optimization
-export const smoothScrollTo = (elementId: string, offset: number = 0) => {
+// Enhanced smooth scroll utility with performance optimization
+export const smoothScrollTo = (
+  elementId: string,
+  offset: number = 80, // Default offset for sticky nav
+  behavior: ScrollBehavior = 'smooth'
+) => {
   const element = document.querySelector(elementId);
   if (!element) {
     console.warn(`Element with selector "${elementId}" not found`);
@@ -11,8 +15,62 @@ export const smoothScrollTo = (elementId: string, offset: number = 0) => {
 
   window.scrollTo({
     top: offsetPosition,
-    behavior: 'smooth'
+    behavior
   });
+};
+
+// Smooth scroll to top
+export const scrollToTop = (behavior: ScrollBehavior = 'smooth') => {
+  window.scrollTo({
+    top: 0,
+    behavior
+  });
+};
+
+// Smooth scroll to bottom
+export const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
+  window.scrollTo({
+    top: document.documentElement.scrollHeight,
+    behavior
+  });
+};
+
+// Enhanced smooth scroll with custom easing
+export const smoothScrollToWithEasing = (
+  elementId: string,
+  offset: number = 80,
+  duration: number = 800
+) => {
+  const element = document.querySelector(elementId);
+  if (!element) {
+    console.warn(`Element with selector "${elementId}" not found`);
+    return;
+  }
+
+  const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - offset;
+  const startPosition = window.pageYOffset;
+  const distance = targetPosition - startPosition;
+  let startTime: number | null = null;
+
+  // Easing function (ease-in-out-cubic)
+  const easeInOutCubic = (t: number): number => {
+    return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+  };
+
+  const animation = (currentTime: number) => {
+    if (startTime === null) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
+    const ease = easeInOutCubic(progress);
+
+    window.scrollTo(0, startPosition + distance * ease);
+
+    if (progress < 1) {
+      requestAnimationFrame(animation);
+    }
+  };
+
+  requestAnimationFrame(animation);
 };
 
 // Debounced scroll handler for performance

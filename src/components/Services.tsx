@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Target, Zap, Users, ArrowRight, CheckCircle } from 'lucide-react';
+import { smoothScrollToWithEasing } from '../utils/scroll';
 
 const Services: React.FC = () => {
   const services = [
@@ -35,14 +36,11 @@ const Services: React.FC = () => {
   ];
 
   const scrollToContact = () => {
-    const element = document.querySelector('#contact');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    smoothScrollToWithEasing('#contact', 80, 800);
   };
 
   return (
-    <section id="services" className="section bg-white">
+    <section id="services" className="section bg-white scroll-mt-20">
       <div className="container">
         {/* Section Header */}
         <motion.div
@@ -132,12 +130,7 @@ const Services: React.FC = () => {
                 <ArrowRight size={20} className="group-hover:translate-x-0.5 transition-transform" />
               </button>
               <button
-                onClick={() => {
-                  const element = document.querySelector('#results');
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
+                onClick={() => smoothScrollToWithEasing('#results', 80, 800)}
                 className="btn btn-secondary btn-lg"
               >
                 View Case Studies

@@ -21,7 +21,7 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="section bg-neutral-50">
+    <section id="contact" className="section bg-neutral-50 scroll-mt-20">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
