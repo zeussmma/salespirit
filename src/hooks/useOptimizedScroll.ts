@@ -6,7 +6,7 @@ interface ScrollState {
   isScrolling: boolean;
 }
 
-export const useOptimizedScroll = (throttleMs: number = 16) => {
+export const useOptimizedScroll = () => {
   const [scrollState, setScrollState] = useState<ScrollState>({
     scrollY: 0,
     scrollDirection: 'down',
@@ -15,7 +15,7 @@ export const useOptimizedScroll = (throttleMs: number = 16) => {
 
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
-  const scrollTimeout = useRef<NodeJS.Timeout>();
+  const scrollTimeout = useRef<number | undefined>(undefined);
 
   const updateScrollState = useCallback(() => {
     const scrollY = window.pageYOffset;
@@ -32,11 +32,11 @@ export const useOptimizedScroll = (throttleMs: number = 16) => {
 
     // Clear existing timeout
     if (scrollTimeout.current) {
-      clearTimeout(scrollTimeout.current);
+      window.clearTimeout(scrollTimeout.current);
     }
 
     // Set isScrolling to false after scrolling stops
-    scrollTimeout.current = setTimeout(() => {
+    scrollTimeout.current = window.setTimeout(() => {
       setScrollState(prev => ({ ...prev, isScrolling: false }));
     }, 150);
   }, []);
@@ -57,11 +57,11 @@ export const useOptimizedScroll = (throttleMs: number = 16) => {
     });
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current);
+        window.clearTimeout(scrollTimeout.current);
       }
     };
   }, [handleScroll]);
@@ -133,7 +133,7 @@ export const useActiveSection = (sections: string[]) => {
 
     // Find active section
     const scrollPosition = scrollY + 100; // Offset for sticky nav
-    
+
     for (const section of sections) {
       const cached = sectionsCache.current.get(section);
       if (cached) {
