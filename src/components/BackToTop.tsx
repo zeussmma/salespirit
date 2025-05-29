@@ -1,30 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronUp } from 'lucide-react';
 import { trackConversion } from '../utils/analytics';
 import { scrollToTop } from '../utils/scroll';
+import { useOptimizedScroll } from '../hooks/useOptimizedScroll';
 
 const BackToTop: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const toggleVisibility = () => {
-      // Show button when page is scrolled down 300px
-      if (window.pageYOffset > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    // Add scroll event listener
-    window.addEventListener('scroll', toggleVisibility);
-
-    // Clean up
-    return () => {
-      window.removeEventListener('scroll', toggleVisibility);
-    };
-  }, []);
+  // Use optimized scroll hook
+  const { scrollY } = useOptimizedScroll();
+  const isVisible = scrollY > 300;
 
   const handleScrollToTop = () => {
     trackConversion('back_to_top_click');

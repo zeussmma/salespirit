@@ -1,38 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trackConversion } from '../utils/analytics';
 import { smoothScrollToInstant } from '../utils/scroll';
+import { useOptimizedScroll, useActiveSection } from '../hooks/useOptimizedScroll';
 
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+  // Use optimized scroll hook
+  const { scrollY } = useOptimizedScroll();
+  const scrolled = scrollY > 20;
 
-      // Detect active section
-      const sections = ['home', 'about', 'services', 'testimonials', 'contact'];
-      const scrollPosition = window.scrollY + 100; // Offset for sticky nav
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Call once to set initial state
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  // Use optimized active section detection
+  const sections = useMemo(() => ['home', 'about', 'services', 'testimonials', 'contact'], []);
+  const activeSection = useActiveSection(sections);
 
   const navItems = [
     { name: 'Home', href: '#home' },

@@ -310,12 +310,65 @@ body {
     }
   }
 
+  /* Safe performance optimizations */
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-scale {
+    /* Enable hardware acceleration only for animated elements */
+    transform: translateZ(0);
+    will-change: transform, opacity;
+  }
+
+  /* Optimize animations for 60fps */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  .will-change-auto {
+    will-change: auto;
+  }
+
+  /* Smooth scrolling optimizations */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    /* Prevent layout shifts */
+    overflow-x: hidden;
+  }
+
+  /* GPU acceleration for common animations */
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-scale {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+  }
+
   /* Reduce motion for accessibility */
   @media (prefers-reduced-motion: reduce) {
     .animate-fade-in {
       animation: none;
       opacity: 1;
       transform: none;
+    }
+
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Optimize for mobile performance */
+  @media (max-width: 768px) {
+    .complex-animation {
+      /* Reduce complexity on mobile for specific elements */
+      animation-duration: 0.3s !important;
+      transition-duration: 0.3s !important;
     }
   }
 }

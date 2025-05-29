@@ -157,7 +157,7 @@ const Hero: React.FC = () => {
                   </div>
 
                   {/* Interactive Line Chart with Tooltips */}
-                  <div className="h-32 bg-gradient-to-r from-primary-50 to-accent-blue/5 rounded-lg p-4 relative overflow-hidden">
+                  <div className="h-32 bg-gradient-to-r from-primary-50 to-accent-blue/5 rounded-lg p-4 relative overflow-hidden" style={{ willChange: 'auto' }}>
                     {/* Chart Grid */}
                     <div className="absolute inset-4">
                       <div className="h-full w-full relative">
@@ -212,8 +212,13 @@ const Hero: React.FC = () => {
                             key={index}
                             initial={{ scale: 0, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                            transition={{
+                              duration: 0.4,
+                              delay: 0.8 + index * 0.05,
+                              ease: "easeOut"
+                            }}
                             className="group"
+                            style={{ willChange: 'transform, opacity' }}
                           >
                             {/* Invisible hover area for better UX */}
                             <circle
