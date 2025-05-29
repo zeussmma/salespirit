@@ -278,10 +278,7 @@ body {
     scroll-snap-align: center;
   }
 
-  /* Loading animations */
-  .animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
-  }
+
 
   @keyframes fadeIn {
     from {
@@ -332,21 +329,7 @@ body {
     will-change: auto;
   }
 
-  /* Smooth scrolling optimizations */
-  html {
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    /* Prevent layout shifts */
-    overflow-x: hidden;
-  }
 
-  /* GPU acceleration for common animations */
-  .animate-fade-in,
-  .animate-slide-up,
-  .animate-scale {
-    transform: translateZ(0);
-    will-change: transform, opacity;
-  }
 
   /* Reduce motion for accessibility */
   @media (prefers-reduced-motion: reduce) {
@@ -360,6 +343,11 @@ body {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+    }
+
+    /* Keep smooth scrolling even with reduced motion */
+    html {
+      scroll-behavior: smooth !important;
     }
   }
 
