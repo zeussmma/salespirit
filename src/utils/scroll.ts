@@ -17,7 +17,7 @@ export const smoothScrollTo = (elementId: string, offset: number = 0) => {
 
 // Debounced scroll handler for performance
 export const debounce = (func: Function, wait: number) => {
-  let timeout: NodeJS.Timeout;
+  let timeout: number;
   return function executedFunction(...args: any[]) {
     const later = () => {
       clearTimeout(timeout);

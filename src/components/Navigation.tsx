@@ -49,14 +49,6 @@ const Navigation: React.FC = () => {
     setIsOpen(false);
   };
 
-  const scrollToContact = () => {
-    trackConversion('cta_click');
-    const element = document.querySelector('#contact');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   const handleBookCall = () => {
     trackConversion('nav_scroll_to_booking');
     const element = document.querySelector('#contact');
