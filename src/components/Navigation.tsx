@@ -14,7 +14,7 @@ const Navigation: React.FC = () => {
       setScrolled(window.scrollY > 20);
 
       // Detect active section
-      const sections = ['home', 'about', 'services', 'contact'];
+      const sections = ['home', 'about', 'services', 'testimonials', 'contact'];
       const scrollPosition = window.scrollY + 100; // Offset for sticky nav
 
       for (const section of sections) {
@@ -38,6 +38,7 @@ const Navigation: React.FC = () => {
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
     { name: 'Services', href: '#services' },
+    { name: 'Results', href: '#testimonials' },
     { name: 'Contact', href: '#contact' },
   ];
 

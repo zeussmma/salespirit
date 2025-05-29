@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Play, CheckCircle, Star } from 'lucide-react';
+import { smoothScrollToInstant } from '../utils/scroll';
 
 const Hero: React.FC = () => {
   const scrollToContact = () => {
@@ -11,10 +12,7 @@ const Hero: React.FC = () => {
   };
 
   const scrollToResults = () => {
-    const element = document.querySelector('#results');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    smoothScrollToInstant('#testimonials', 80);
   };
 
   const stats = [
@@ -158,16 +156,146 @@ const Hero: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Chart Placeholder */}
-                  <div className="h-32 bg-gradient-to-r from-primary-100 to-accent-blue/10 rounded-lg flex items-end justify-center p-4">
-                    <div className="flex items-end gap-2">
-                      {[40, 60, 45, 80, 65, 90, 75].map((height, index) => (
-                        <div
-                          key={index}
-                          className="bg-primary-500 rounded-sm"
-                          style={{ height: `${height}%`, width: '12px' }}
+                  {/* Interactive Line Chart with Tooltips */}
+                  <div className="h-32 bg-gradient-to-r from-primary-50 to-accent-blue/5 rounded-lg p-4 relative overflow-hidden">
+                    {/* Chart Grid */}
+                    <div className="absolute inset-4">
+                      <div className="h-full w-full relative">
+                        {/* Horizontal grid lines */}
+                        {[20, 40, 60, 80].map((position) => (
+                          <div
+                            key={position}
+                            className="absolute w-full border-t border-neutral-200/30"
+                            style={{ top: `${position}%` }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* SVG Line Chart */}
+                    <div className="relative h-full w-full">
+                      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 280 96" preserveAspectRatio="none">
+                        {/* Area Fill */}
+                        <motion.path
+                          initial={{ pathLength: 0, opacity: 0 }}
+                          animate={{ pathLength: 1, opacity: 0.3 }}
+                          transition={{ duration: 2, ease: "easeOut" }}
+                          d="M20,80 Q50,70 80,65 Q110,45 140,50 Q170,35 200,25 Q230,20 260,15 L260,96 L20,96 Z"
+                          fill="url(#gradient)"
+                          className="drop-shadow-sm"
                         />
-                      ))}
+
+                        {/* Main Line */}
+                        <motion.path
+                          initial={{ pathLength: 0 }}
+                          animate={{ pathLength: 1 }}
+                          transition={{ duration: 2, ease: "easeOut" }}
+                          d="M20,80 Q50,70 80,65 Q110,45 140,50 Q170,35 200,25 Q230,20 260,15"
+                          stroke="#f97316"
+                          strokeWidth="3"
+                          fill="none"
+                          strokeLinecap="round"
+                          className="drop-shadow-sm"
+                        />
+
+                        {/* Interactive Data Points */}
+                        {[
+                          { x: 20, y: 80, month: 'Jan', growth: '€23K' },
+                          { x: 60, y: 68, month: 'Feb', growth: '€28K' },
+                          { x: 100, y: 60, month: 'Mar', growth: '€34K' },
+                          { x: 140, y: 45, month: 'Apr', growth: '€41K' },
+                          { x: 180, y: 35, month: 'May', growth: '€47K' },
+                          { x: 220, y: 25, month: 'Jun', growth: '€50K' },
+                          { x: 260, y: 15, month: 'Jul', growth: '€52K' }
+                        ].map((point, index) => (
+                          <motion.g
+                            key={index}
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                            className="group"
+                          >
+                            {/* Invisible hover area for better UX */}
+                            <circle
+                              cx={point.x}
+                              cy={point.y}
+                              r="10"
+                              fill="transparent"
+                              className="cursor-pointer"
+                            />
+
+                            {/* Visible data point */}
+                            <circle
+                              cx={point.x}
+                              cy={point.y}
+                              r="3"
+                              fill="#f97316"
+                              stroke="white"
+                              strokeWidth="2"
+                              className="group-hover:r-4 group-hover:fill-orange-600 transition-all duration-200 drop-shadow-sm"
+                            />
+
+                            {/* Hover ring effect */}
+                            <circle
+                              cx={point.x}
+                              cy={point.y}
+                              r="6"
+                              fill="none"
+                              stroke="#f97316"
+                              strokeWidth="1"
+                              opacity="0"
+                              className="group-hover:opacity-40 transition-opacity duration-200"
+                            />
+
+                            {/* Compact Tooltip */}
+                            <g className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                              {/* Tooltip background */}
+                              <rect
+                                x={point.x - 18}
+                                y={point.y - 28}
+                                width="36"
+                                height="18"
+                                rx="4"
+                                fill="#1f2937"
+                                className="drop-shadow-md"
+                              />
+
+                              {/* Tooltip arrow */}
+                              <path
+                                d={`M${point.x - 3},${point.y - 10} L${point.x},${point.y - 7} L${point.x + 3},${point.y - 10} Z`}
+                                fill="#1f2937"
+                              />
+
+                              {/* Tooltip content - just percentage */}
+                              <text x={point.x} y={point.y - 16} textAnchor="middle" className="fill-white text-xs font-semibold">
+                                {point.growth}
+                              </text>
+                            </g>
+                          </motion.g>
+                        ))}
+
+                        {/* Gradient Definition */}
+                        <defs>
+                          <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stopColor="#f97316" stopOpacity="0.4"/>
+                            <stop offset="100%" stopColor="#f97316" stopOpacity="0.05"/>
+                          </linearGradient>
+                        </defs>
+                      </svg>
+
+                      {/* Month Labels */}
+                      <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-neutral-400 px-2">
+                        <span>Jan</span>
+                        <span>Jul</span>
+                      </div>
+
+                      {/* Growth Indicator */}
+                      <div className="absolute top-2 right-2 flex items-center gap-1 text-xs text-accent-green bg-white/80 px-2 py-1 rounded-full backdrop-blur-sm">
+                        <svg width="10" height="10" viewBox="0 0 10 10" className="fill-current">
+                          <path d="M2 7L5 3L8 7" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span className="font-semibold">+127%</span>
+                      </div>
                     </div>
                   </div>
                 </div>

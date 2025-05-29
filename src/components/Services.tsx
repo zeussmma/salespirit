@@ -130,7 +130,7 @@ const Services: React.FC = () => {
                 <ArrowRight size={20} className="group-hover:translate-x-0.5 transition-transform" />
               </button>
               <button
-                onClick={() => smoothScrollToInstant('#results', 80)}
+                onClick={() => smoothScrollToInstant('#testimonials', 80)}
                 className="btn btn-secondary btn-lg"
               >
                 View Case Studies

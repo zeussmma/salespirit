@@ -47,7 +47,7 @@ const Testimonials: React.FC = () => {
   ];
 
   return (
-    <section id="testimonials" className="section bg-neutral-50">
+    <section id="testimonials" className="section bg-neutral-50 scroll-mt-20">
       <div className="container">
         {/* Section Header */}
         <motion.div
