@@ -1,0 +1,182 @@
+import React, { useState, useEffect } from 'react';
+import { Menu, X, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { trackConversion } from '../utils/analytics';
+
+const Navigation: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+
+      // Detect active section
+      const sections = ['home', 'about', 'services', 'contact'];
+      const scrollPosition = window.scrollY + 100; // Offset for sticky nav
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Call once to set initial state
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navItems = [
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
+    { name: 'Services', href: '#services' },
+    { name: 'Contact', href: '#contact' },
+  ];
+
+  const scrollToSection = (href: string) => {
+    trackConversion('scroll_to_section');
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsOpen(false);
+  };
+
+  const scrollToContact = () => {
+    trackConversion('cta_click');
+    const element = document.querySelector('#contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleBookCall = () => {
+    trackConversion('nav_scroll_to_booking');
+    const element = document.querySelector('#contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-neutral-200'
+          : 'bg-white/90 backdrop-blur-sm'
+      }`}
+    >
+      <div className="container">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex-shrink-0"
+          >
+            <button
+              onClick={() => scrollToSection('#home')}
+              className="text-2xl font-bold text-neutral-900 hover:text-primary-500 transition-colors"
+            >
+              Salespirit
+            </button>
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-8">
+            {navItems.map((item, index) => {
+              const sectionId = item.href.replace('#', '');
+              const isActive = activeSection === sectionId;
+
+              return (
+                <motion.button
+                  key={item.name}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  onClick={() => scrollToSection(item.href)}
+                  className={`nav-link ${isActive ? 'nav-link-active' : ''}`}
+                >
+                  {item.name}
+                </motion.button>
+              );
+            })}
+          </div>
+
+          {/* CTA Button */}
+          <motion.button
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            onClick={handleBookCall}
+            className="hidden lg:flex btn btn-primary btn-md group"
+          >
+            Book Call
+            <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+          </motion.button>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="lg:hidden p-2 text-neutral-600 hover:text-neutral-900 transition-colors"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden bg-white border-t border-neutral-200 shadow-lg"
+          >
+            <div className="container py-4">
+              <div className="space-y-2">
+                {navItems.map((item) => {
+                  const sectionId = item.href.replace('#', '');
+                  const isActive = activeSection === sectionId;
+
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => scrollToSection(item.href)}
+                      className={`block w-full text-left px-4 py-3 text-base font-medium transition-colors rounded-lg ${
+                        isActive
+                          ? 'text-primary-500 bg-primary-50'
+                          : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50'
+                      }`}
+                    >
+                      {item.name}
+                    </button>
+                  );
+                })}
+                <div className="pt-4 border-t border-neutral-200">
+                  <button
+                    onClick={handleBookCall}
+                    className="w-full btn btn-primary btn-md"
+                  >
+                    Book Call
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
+  );
+};
+
+export default Navigation;
